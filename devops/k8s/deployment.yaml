@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sales-anomaly-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: api
+        image: sales-anomaly-backend:latest
+        ports:
+        - containerPort: 8000
+      - name: dashboard
+        image: sales-anomaly-dashboard:latest
+        ports:
+        - containerPort: 5000
+      - name: notification
+        image: sales-anomaly-notification:latest
+        ports:
+        - containerPort: 8001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sales-anomaly-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: sales-anomaly-frontend:latest
+        ports:
+        - containerPort: 3000

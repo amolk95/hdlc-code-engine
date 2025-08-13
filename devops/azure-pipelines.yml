@@ -1,0 +1,40 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  backendPath: 'backend'
+  frontendPath: 'frontend'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildBackend
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.10'
+    - script: |
+        cd $(backendPath)
+        pip install -r requirements.txt
+      displayName: 'Install Backend Dependencies'
+    - script: |
+        cd $(backendPath)
+        python -m unittest discover
+      displayName: 'Run Backend Tests'
+  - job: BuildFrontend
+    steps:
+    - script: |
+        cd $(frontendPath)
+        npm install
+        npm run build
+      displayName: 'Build Frontend'
+
+- stage: Deploy
+  jobs:
+  - job: DeployK8s
+    steps:
+    - script: echo "Deploy to Kubernetes cluster"
+      displayName: 'Deploy'
