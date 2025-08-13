@@ -1,0 +1,12 @@
+database:
+  host: localhost
+  port: 5432
+  user: sales_user
+  password: sales_pass
+  dbname: sales_db
+redis:
+  host: localhost
+  port: 6379
+security:
+  oauth2: true
+  jwt_secret: "supersecretkey"
